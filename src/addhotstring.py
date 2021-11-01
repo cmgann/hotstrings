@@ -41,8 +41,7 @@ class App:
         frame_buttons.grid(column=1, row=0)
 
                 # buttons
-        # lambda buttons needed to pass args
-        add_button = Button(frame_buttons, text='Add', command = lambda: self.frame_landing_delete(self.add_hotstring()))
+        add_button = Button(frame_buttons, text='Add', command = self.add_hotstring)
         edit_button = Button(frame_buttons, text='Edit')
         delete_button = Button(frame_buttons, text='Delete')
             #grid
@@ -53,6 +52,11 @@ class App:
         # end landing frame
 
     def add_hotstring(self):
+
+        # delete old landing frame
+        self.frame_landing_delete()
+
+        # create new landing frame
         self.frame_landing= Frame(self.master)
         self.frame_landing.grid(column=0, row=0)
         # start landing frame
@@ -71,9 +75,8 @@ class App:
         label_command.grid(column=0, row=0)
 
 
-    def frame_landing_delete (view):
+    def frame_landing_delete (self):
         self.frame_landing.destroy()
-        self.view()
 
 
 def main():
