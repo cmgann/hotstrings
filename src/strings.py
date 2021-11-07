@@ -5,11 +5,11 @@ import os
 from mytools import get_hotstrings, get_hot_string_text
 
 def write(combo):
-    print('in s.write')
-    print(combo)
+    #print('in s.write')
+    #print(combo)
     # checks if the combination matches a hotstring
     if combo in get_hotstrings():
-        print(f'The {combo} is valid')
+        #print(f'The {combo} is valid')
         text = get_hot_string_text(combo)
 
         # highlights and deletes string
@@ -28,8 +28,9 @@ def write(combo):
                 pyautogui.press('v')
         # all others
         else:
-            with pyautogui.hold('control'):
-                pyautogui.press('v')
+            print('did not work')
+            #with pyautogui.hold('control'):
+                #pyautogui.press('v')
 
     else:
         print('combo not valid')

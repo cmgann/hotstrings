@@ -1,5 +1,5 @@
 from tkinter import Tk, Label, Button, Listbox, StringVar, Frame, Entry, Text
-from mytools import get_hotstrings, add_hotstring_file, delete_hotstring_file
+from mytools import get_hotstrings, add_hotstring_file, delete_hotstring_file, get_hot_string_text, edit_hotstring_file
 
 
 class App:
@@ -41,8 +41,8 @@ class App:
 
                 # buttons
         add_button = Button(frame_buttons, text='Add', command = self.button_add_hotstring)
-        edit_button = Button(frame_buttons, text='Edit')
-        delete_button = Button(frame_buttons, text='Delete', command = self.delete_hotstring)
+        edit_button = Button(frame_buttons, text='Edit', command=self.button_edit_hotstring)
+        delete_button = Button(frame_buttons, text='Delete', command = self.button_delete_hotstring)
             #grid
         add_button.grid(column=0, row=0)
         edit_button.grid(column=0, row=1)
@@ -97,7 +97,7 @@ class App:
         # goes back to landing view
         self.view_landing()
 
-    def delete_hotstring(self):
+    def button_delete_hotstring(self):
         selection = self.list_hotstrings.curselection()
         selection = self.hotstrings[selection[0]]
 
@@ -108,6 +108,66 @@ class App:
         self.frame_landing_delete()
         self.view_landing()
 
+
+    def button_edit_hotstring(self):
+        print('Edit Button Pressed')
+
+        # get selection information
+        selection = self.list_hotstrings.curselection()
+        selection = self.hotstrings[selection[0]]
+        #print(selection)
+
+        # get output information
+        output= get_hot_string_text(selection)
+
+        # delete old landing frame
+        self.frame_landing_delete()
+        # create new landing frame
+        self.frame_landing= Frame(self.master)
+        self.frame_landing.grid(column=0, row=0)
+        # start landing frame
+
+        frame_hotstring_list= Frame(self.frame_landing)
+        frame_hotstring_list.grid(column=0, row=0)
+
+            # Command Frame
+        frame_hotstring_command = Frame(self.frame_landing)
+        frame_hotstring_command.grid(column=0, row=0)
+
+                # Command Label
+        label_command = Label(frame_hotstring_command, text = 'Hotstring Command')
+        self.entry_command = Entry(frame_hotstring_command)
+                    # entry defaut variable
+        self.entry_command.insert('end', selection)
+                # Edit button
+        button_command_edit = Button(frame_hotstring_command, text='Edit', command= lambda: self.edit_hotstring(selection))
+                # Text box
+        self.text_command_output = Text(frame_hotstring_command, width=40, height=10)
+                    # insert text
+        self.text_command_output.insert('end', output)
+
+            # Command Frame grid
+        label_command.grid(column=0, row=0)
+        self.entry_command.grid(column=0, row=1)
+        button_command_edit.grid(column=1, row=1)
+        self.text_command_output.grid(column=0, row=2, columnspan=2)
+
+    
+    def edit_hotstring(self,selection):
+        print('Hotstring modified')
+        print(selection)
+
+        current_command = selection
+        # get new command entry
+        new_command = self.entry_command.get()
+        # get text output
+        output = self.text_command_output.get('1.0', 'end')
+        # create file
+        edit_hotstring_file(current_command, new_command, output)
+        
+        # clear current view and go to landing view
+        self.frame_landing_delete()
+        self.view_landing()
 
 
 def main():

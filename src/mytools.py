@@ -38,6 +38,14 @@ def delete_hotstring_file(hotstring):
 	os.remove(f'hotstrings/{hotstring}.hs')
 
 
+def edit_hotstring_file(current_command, new_command, output):
+	if current_command == new_command:
+		add_hotstring_file(current_command, output)
+	else:
+		delete_hotstring_file(current_command)
+		add_hotstring_file(new_command,output)
+
+
 
 if __name__=="__main__":
 	print(get_hotstrings())
